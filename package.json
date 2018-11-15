@@ -1,0 +1,14 @@
+{
+  "name": "tw-beamspots",
+  "version": "1.0.0",
+  "description": "9E EUTELSAT KA-SAT 9A Satellite Footprint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabor Pap",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+  integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+  crossorigin=""></script>
+  <style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+    html, body, #map {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    (function () {
+
+        fetch("spots.json")
+          	.then(function(response){
+                return response.json();
+            })
+          	.then(function(parsed){
+                drawMap(parsed);
+            });
+
+        function drawMap(data){
+            var map = L.map('map').setView([45, -11], 3);
+
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+              maxZoom: 18,
+              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+              id: 'mapbox.light'
+            }).addTo(map);
+
+            L.geoJSON(data, {style: style}).addTo(map);
+
+            function getColor(d) {
+                return  d == 'blue' ? 'rgba(0,0,255,0.5)' :
+                        d == 'green' ? 'rgba(0,255,0,0.5)' :
+                        d == 'orange' ? 'rgba(255,165,0,0.5)' :
+                        d == 'violet' ? 'rgba(238,130,238,0.5)' :
+                        'rgba(255,255,255,0.5)';
+            };
+
+            function style(feature) {
+                return {
+                    fillColor: getColor(feature.properties.color),
+                    weight: 1,
+                    opacity: 1,
+                    color: 'white',
+                    dashArray: '3',
+                    fillOpacity: 0.7
+                };
+            };
+        };
+    })();
+
+  </script>
+</body>
+</html>
